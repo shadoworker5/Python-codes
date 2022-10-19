@@ -1,22 +1,21 @@
+"""
+ * @author Kassoum TRAORE
+ * @email shadoworker5.dev@gmail.com
+ * @create date 2022-06-20 23:34:42
+ * @modify date 2022-08-02 01:03:17
+ * @desc [description]
+"""
 import os
 import sys
 from PIL import Image
-import art
+# import art
 from PIL.ExifTags import TAGS, GPSTAGS
 
 all_files = list()
 all_gps = list()
 list_menu = ['Read images data', 'Read videos data', 'Draw road', 'Exit']
 
-all_gps = [
-    {'GPSLatitudeRef': 'N', 'GPSLatitude': (11.0, 10.0, 45.3403), 'GPSLongitudeRef': 'W', 'GPSLongitude': (4.0, 14.0, 56.4397)},
-    {'GPSLatitudeRef': 'N', 'GPSLatitude': (11.0, 10.0, 52.5192), 'GPSLongitudeRef': 'W', 'GPSLongitude': (4.0, 14.0, 50.6393)}
-]
-#[
-#     {'GPSLatitudeRef': 'N', 'GPSLatitude': (54.0, 36.0, 10.17), 'GPSLongitudeRef': 'W', 'GPSLongitude': (3.0, 5.0, 54.9)},
-#     {'GPSLatitudeRef': 'N', 'GPSLatitude': (11.0, 10.0, 45.3403), 'GPSLongitudeRef': 'W', 'GPSLongitude': (4.0, 14.0, 56.4397)}, 
-#     {'GPSLatitudeRef': 'N', 'GPSLatitude': (11.0, 10.0, 52.5192), 'GPSLongitudeRef': 'W', 'GPSLongitude': (4.0, 14.0, 50.6393)}
-# ]
+all_gps = []
 
 def draw_position():
     if all_gps:
@@ -64,7 +63,8 @@ def read_data():
     for it in all_files:
         item = Image.open(it)
         exif_data.append(f"-------------------------------------File {all_files.index(it) + 1} => {it}------------------------------------------")
-        if item.getexif() != None:
+        if item._getexif() != None:
+
             for key, values in item._getexif().items():
                 tags = TAGS.get(key, key)
                 if tags == 'GPSInfo':
@@ -81,6 +81,7 @@ def read_data():
         else:
             print("Data not found")
 
+    print(exif_data)
     write_result_in_file(exif_data)
     try_again()
 
@@ -157,6 +158,6 @@ def main():
     choose_menu()
 
 if __name__ == '__main__':
-    art.tprint('Shadoworker5')
+    # art.tprint('Shadoworker5')
     change_directorie()
     main()

@@ -1,3 +1,10 @@
+"""
+ * @author Kassoum TRAORE
+ * @email shadoworker5.dev@gmail.com
+ * @create date 2022-06-20 23:34:48
+ * @modify date 2022-06-20 23:34:49
+ * @desc [description]
+"""
 import subprocess
 import re
 from datetime import datetime
@@ -58,7 +65,7 @@ def main():
     profile_key = get_all_profile_key(convert_profile_list)
     print_result(profile_key)
     end_start = datetime.timestamp(datetime.today())
-    # print("Scan time: {} seconds".format(str(end_start - time_start).split(".")[0]))
+    print("Scan time: {} seconds".format(str(end_start - time_start).split(".")[0]))
 
 if __name__ == '__main__':
     tprint('Shadoworker5')

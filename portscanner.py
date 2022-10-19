@@ -2,8 +2,8 @@
  * @author Kassoum TRAORE
  * @email shadoworker5.dev@gmail.com
  * @create date 2021-10-05 16:24:01
- * @modify date 2022-05-17 00:46:18
- * @desc [description]
+ * @modify date 2022-06-20 22:48:07
+ * @version v2.0.1
 """
 
 """ You must use this script by example 127.0.0.1 10000 1 """
@@ -11,18 +11,25 @@ from datetime import datetime
 import socket
 import threading
 import sys
-from csv import reader
+from pandas import read_csv
 
 result = list()
+data_frame = read_csv('port_name_list.csv')
 
-def load_port_list(port, i):
-    with open('port_name_list.csv', 'r') as file:
-        csv_reader = reader(file)
-        for row in csv_reader:
-            if row[1] == port:
-                if row[row[1].index(port) + i] == '':
-                    return 'Unknow service'
-                return row[row[1].index(port) + i]
+def load_port_list(port, type_item):
+    get_data_frame = data_frame['Port Number'] == port
+    f = lambda x: str(get_port_info[x].values).replace('[','').replace(' ', ', ').replace(']','').replace('\'','')
+    get_port_info = data_frame[get_data_frame]
+    if type_item == 'service':
+        result = f('Service Name')
+        if result != '':
+            return result
+        return 'unkown'
+    elif type_item == 'protocol':
+        response = f('Transport Protocol')
+        if response != '':
+            return response
+        return 'unkown'
 
 def scan(ip, port, port_dict, delay):
     sp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -58,7 +65,7 @@ def async_call(address_ip, ports, delay):
     print(f"+{'-'*105}+")
     for i in range(ports):
         if port_dict[i] == "open":
-            print(f'| {str(i):<10} | {load_port_list(str(i), 2):<26} | {load_port_list(str(i), 3):<50} | {port_dict[i]:<8} |')
+            print(f'| {str(i):<10} | {load_port_list(str(i), "protocol"):<26} | {load_port_list(str(i), "service"):<50} | {port_dict[i]:<8} |')
             count_open_port += 1
             print(f"+{'-'*105}+")
     end_start = datetime.timestamp(datetime.today())
